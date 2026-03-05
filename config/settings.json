@@ -1,0 +1,23 @@
+{
+    "titre": "SaAM",
+    "sousTitre": "Shots and Assets Manager",
+    "company": "LRDS",
+    "version": "0.5.0",
+    "status": [
+        { "code": "hld", "label": "On Hold", "color": "#dc3545" },
+        { "code": "wip", "label": "In Progress", "color": "#ffc107" },
+        { "code": "rev", "label": "Review", "color": "#0d6efd" },
+        { "code": "fin", "label": "Final", "color": "#198754" }
+    ],
+    "departements": [
+        { "code": "PRE", "label": "Pre-Prod / Story", "color": "#6c757d" },
+        { "code": "MOD", "label": "Modeling", "color": "#17a2b8" },
+        { "code": "SUR", "label": "Surfacing / Texturing", "color": "#6f42c1" },
+        { "code": "RIG", "label": "Rigging", "color": "#e83e8c" },
+        { "code": "LAY", "label": "Layout", "color": "#fd7e14" },
+        { "code": "ANI", "label": "Animation", "color": "#007bff" },
+        { "code": "FXS", "label": "FX / Simulation", "color": "#00ced1" },
+        { "code": "LIG", "label": "Lighting / Rendering", "color": "#ffc107" },
+        { "code": "COM", "label": "Compositing", "color": "#28a745" }
+    ]
+}

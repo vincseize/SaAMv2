@@ -1,0 +1,55 @@
+/* --- 
+css/base.css
+SaAMv2 - Asset Management System
+Interface "Standard Compact" - Final Version
+--- */
+
+:root {
+    /* --- CONFIGURATION DESIGN --- */
+    --vignette-size: 146px;
+    --asset-header-bg: #444b54;
+    --asset-header-color: #ffffff;
+    --saam-dept-color: #adb5bd;
+    --card-radius-bottom: 8px;
+    --border-color: #2b2e31;
+    --main-bg: #e9ecef;
+    --loader-bg: #1a1d20;
+    --accent-color: #0d6efd;
+    --panel-bg: #f8f9fa;
+}
+
+html, body { 
+    height: 100%; margin: 0; padding: 0; overflow: hidden; 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    font-size: 14px; 
+}
+
+body.loading-active { overflow: hidden; }
+
+.navbar { height: 56px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+footer { height: 22px; line-height: 22px; font-size: 0.7rem; z-index: 1000; background: #212529; }
+
+.main-wrapper { 
+    display: flex; height: calc(100vh - 56px - 22px); 
+    background: var(--main-bg);
+}
+
+/* --- PANNEAUX ET REDIMENSIONNEMENT --- */
+.side-panel { 
+    background: var(--panel-bg); 
+    width: 280px; 
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    flex-shrink: 0;
+    border-right: 1px solid #dee2e6;
+}
+.side-panel.closed { width: 0 !important; border: none; }
+.panel-content { width: 280px; padding: 15px; }
+
+.resizer { 
+    width: 4px; cursor: col-resize; background: #dee2e6; transition: background 0.2s;
+}
+.resizer:hover { background: var(--accent-color); }
+
+.center-content { flex: 1; display: flex; flex-direction: column; background: #fff; min-width: 0; }

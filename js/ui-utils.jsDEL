@@ -1,0 +1,89 @@
+/**
+ * js/ui-utils.js
+ * Utilitaires pour l'interface utilisateur de SaAMv2
+ * - Authentification, graphiques, resizers
+ */
+
+/**
+ * GESTION DE L'AUTHENTIFICATION
+ */
+function setupAuthDemo() {
+    if (!DOM.auth) return;
+    DOM.auth.addEventListener('click', (e) => {
+        const btn = e.target.closest('a');
+        if (!btn) return;
+        e.preventDefault();
+        renderAuthUI(!btn.innerText.includes('Logout'));
+    });
+}
+
+function renderAuthUI(isLoggedIn) {
+    if (!DOM.auth) return;
+    DOM.auth.innerHTML = isLoggedIn ? `
+        <div class="user-avatar me-3">AD</div>
+        <span class="text-white-50 small me-3">Admin User</span>
+        <a class="btn btn-xs btn-outline-danger" href="#">Logout</a>` : 
+        `<a class="btn btn-xs btn-outline-primary" href="#">Login</a>`;
+}
+
+/**
+ * CHART & VISUALISATION
+ */
+function updateChart() {
+    const ctx = document.getElementById('myPieChart');
+    if (!ctx || typeof CONFIG_STATUS === 'undefined') return;
+
+    const counts = {};
+    CONFIG_STATUS.forEach(s => counts[s.code] = 0);
+    filteredAssets.forEach(item => {
+        const code = item.getAttribute('data-status-code');
+        if (counts[code] !== undefined) counts[code]++;
+    });
+
+    const dataValues = CONFIG_STATUS.map(s => counts[s.code]);
+    const labels = CONFIG_STATUS.map(s => `${s.label} (${counts[s.code]})`);
+
+    if (myChart) {
+        myChart.data.datasets[0].data = dataValues;
+        myChart.data.labels = labels;
+        myChart.update();
+    } else {
+        myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{ data: dataValues, backgroundColor: CONFIG_STATUS.map(s => s.color), borderWidth: 0 }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 }, color: '#adb5bd' } } }
+            }
+        });
+    }
+}
+
+/**
+ * RESIZERS
+ */
+function initResizer(resizerId, panelId, side) {
+    const resizer = document.getElementById(resizerId);
+    const panel = document.getElementById(panelId);
+    if (!resizer || !panel) return;
+
+    resizer.addEventListener('mousedown', () => {
+        const resize = (e) => {
+            let w = (side === 'left') ? e.clientX : window.innerWidth - e.clientX;
+            if (w > 50 && w < 600) {
+                panel.style.width = w + 'px';
+                panel.querySelector('.panel-content').style.width = w + 'px';
+            }
+        };
+        const stop = () => {
+            document.removeEventListener('mousemove', resize);
+            document.body.style.cursor = 'default';
+        };
+        document.addEventListener('mousemove', resize);
+        document.addEventListener('mouseup', stop, { once: true });
+        document.body.style.cursor = 'col-resize';
+    });
+}

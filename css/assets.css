@@ -1,0 +1,82 @@
+/* --- 
+css/assets.css
+SaAMv2 - Asset Management System
+--- */
+
+:root {
+    --vignette-size: 146px;
+    --card-radius-bottom: 4px;
+    --border-color: #333;
+    --accent-color: #0dcaf0;
+    --saam-dept-color: #55616e;
+    --asset-header-bg: #3b4049;
+    --asset-header-color: #eee;
+}
+
+.assets-scroll-area { flex: 1; overflow-y: auto; scrollbar-width: thin; background-color: #1a1a1a; }
+
+.asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--vignette-size), 1fr));
+    gap: 15px; padding: 15px; align-content: start;
+}
+
+.asset-item { transition: transform 0.2s ease; animation: fadeInAsset 0.3s ease forwards; }
+
+.asset-card { 
+    position: relative; overflow: hidden; border: 1px solid var(--border-color);
+    background: #000; border-radius: 0 0 var(--card-radius-bottom) var(--card-radius-bottom); 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); height: 100%; user-select: none;
+}
+
+.asset-card img.card-img-top {
+    display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover;
+    cursor: zoom-in; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.asset-card:hover img.card-img-top { transform: scale(1.1); }
+
+.asset-version-badge {
+    position: absolute; bottom: 20px; right: 0; background: rgba(0, 0, 0, 0.85);
+    color: var(--accent-color); font-size: 0.65rem; font-weight: bold; padding: 2px 8px;
+    border-radius: 4px 0 0 0; z-index: 5; opacity: 0; transition: opacity 0.3s ease; 
+}
+.asset-card:hover .asset-version-badge { opacity: 1; }
+
+.asset-card .card-header {
+    background-color: var(--asset-header-bg) !important; color: var(--asset-header-color) !important;
+    padding: 6px 10px; font-size: 0.85rem; font-weight: 600; min-height: 34px;
+    display: flex; align-items: center; justify-content: center; position: relative;
+}
+
+.dept-badge { position: absolute; left: 8px; font-size: 0.85rem; font-weight: 800; color: var(--saam-dept-color); }
+
+.asset-card .card-header span.fw-bold { text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 35px; }
+
+/* --- GESTION STATUS & DROITS --- */
+.card-status-area {
+    position: relative; height: 20px; border-top: 1px solid rgba(0,0,0,0.3);
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    transition: filter 0.2s ease;
+}
+
+/* Cas cliquable (Root/Admin/Manager) */
+.status-clickable { cursor: pointer; }
+.status-clickable:hover { filter: brightness(1.2); box-shadow: inset 0 0 5px rgba(255,255,255,0.3); }
+
+/* Cas lecture seule (User) */
+.status-readonly { cursor: not-allowed; opacity: 0.9; }
+
+.status-text { font-weight: 700; color: #fff; text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.6px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+/* Scrollbar */
+.assets-scroll-area::-webkit-scrollbar { width: 6px; }
+.assets-scroll-area::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+/* Add Button Card */
+#addAssetBtn .card { border: 2px dashed var(--accent-color) !important; background: rgba(13, 202, 240, 0.05) !important; }
+#addAssetBtn:hover .card { background: rgba(13, 202, 240, 0.1) !important; border-style: solid !important; }
+
+@keyframes fadeInAsset {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

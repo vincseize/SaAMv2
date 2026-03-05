@@ -1,0 +1,55 @@
+/**
+ * js/config.js
+ * Configuration globale et utilitaires pour SaAMv2
+ */
+
+/**
+ * --- CONFIGURATION & ETAT GLOBAL ---
+ */
+let currentPage = 1;
+const itemsPerPage = 32; 
+let filteredAssets = [];
+let allAssets = []; 
+let myChart = null; 
+let sortAsc = true; 
+let assetModal;
+
+// Mappings pour les noms complets
+const DEPT_MAP = {
+    'ANI': 'ANIMATION',
+    'MOD': 'MODELING',
+    'RIG': 'RIGGING',
+    'TEX': 'TEXTURING',
+    'LAY': 'LAYOUT',
+    'LGT': 'LIGHTING'
+};
+
+const STATUS_MAP = {
+    'PRE': 'PRE PROD',
+    'WIP': 'WORK IN PROGRESS',
+    'HLD': 'ON HOLD',
+    'FIN': 'FINAL'
+};
+
+// Sélecteurs DOM réutilisables
+const DOM = {
+    grid: document.getElementById('assetGrid'),
+    search: document.getElementById('searchInput'),
+    clearSearch: document.getElementById('clearSearch'),
+    pagination: document.getElementById('pagination-top'),
+    auth: document.getElementById('authContainer'),
+    statusFilters: document.getElementById('statusFilters'),
+    deptFilters: document.getElementById('deptFilters'),
+    count: document.getElementById('assetCount'),
+    sortBtn: document.getElementById('sortBtn'),
+    details: document.getElementById('detailsPlaceholder')
+};
+
+/**
+ * UTILS : MAPPING
+ */
+const getFullDept = (code) => DEPT_MAP[code?.toUpperCase()] || code?.toUpperCase();
+const getFullStatus = (labelOrCode) => {
+    const entry = Object.entries(STATUS_MAP).find(([key, val]) => val === labelOrCode || key === labelOrCode);
+    return entry ? entry[1] : labelOrCode;
+};

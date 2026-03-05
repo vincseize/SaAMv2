@@ -1,0 +1,14 @@
+{
+    "users": [
+        { "nom": "Martin", "prenom": "Jean", "login": "login","password": "password","role": "Admin" },
+        { "nom": "Leloup", "prenom": "In Progress", "login": "login","password": "password","role": "Superviseur" },
+        { "nom": "Aka", "prenom": "Karim", "login": "login","password": "password","role": "User" },
+        { "nom": "Prudent", "prenom": "Sylvio", "login": "login","password": "password","role": "Superviseur" },
+        { "nom": "Djoufak", "prenom": "Jean", "login": "login","password": "password","role": "User" },
+        { "nom": "Mouafo", "prenom": "Jean", "login": "login","password": "password","role": "Admin" },
+        { "nom": "Nkoum", "prenom": "Jean", "login": "login","password": "password","role": "Admin" },
+        { "nom": "Fokoua", "prenom": "Jean", "login": "login","password": "password","role": "User" },
+        { "nom": "Pottier", "prenom": "Charles", "login": "login","password": "password","role": "Root" }
+
+    ]
+}

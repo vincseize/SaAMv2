@@ -1,0 +1,110 @@
+/**
+ * js/main.js
+ * Script principal pour la gestion de l'interface de SaAMv2
+ * - Recherche, filtres, pagination
+ */
+
+/**
+ * LOGIQUE DE FILTRAGE ET TRI
+ */
+function updateDisplay() {
+    const searchTerm = DOM.search?.value.toLowerCase() || "";
+    const checkedStatus = Array.from(document.querySelectorAll('.status-chk:checked')).map(c => c.value);
+    const checkedDepts = Array.from(document.querySelectorAll('.dept-chk:checked')).map(c => c.value);
+
+    if (DOM.clearSearch) DOM.clearSearch.style.display = searchTerm.length > 0 ? 'block' : 'none';
+
+    filteredAssets = allAssets.filter(item => {
+        return item.getAttribute('data-name').toLowerCase().includes(searchTerm) &&
+               checkedStatus.includes(item.getAttribute('data-status-code')) &&
+               checkedDepts.includes(item.getAttribute('data-dept-code'));
+    });
+
+    if (DOM.count) DOM.count.innerText = filteredAssets.length;
+
+    allAssets.forEach(el => el.style.display = 'none');
+    const totalPages = Math.ceil(filteredAssets.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    
+    filteredAssets.slice(start, start + itemsPerPage).forEach(el => el.style.display = 'block');
+
+    renderPagination(totalPages);
+    updateChart();
+}
+
+function renderPagination(totalPages) {
+    if (!DOM.pagination || totalPages <= 1) { if(DOM.pagination) DOM.pagination.innerHTML=''; return; }
+    // ... (Logique de création de boutons identique à votre code précédent)
+}
+
+/**
+ * DETAILS & COMMENTAIRES
+ */
+function showAssetDetails(data) {
+    const fullDept = getFullDept(data.dept);
+    const fullStatus = getFullStatus(data.status);
+
+    // Modal
+    document.getElementById('modalImg').src = data.img;
+    document.getElementById('modalTitle').innerText = data.name;
+    document.getElementById('modalMeta').innerHTML = `
+        <span class="fw-bold" style="color:${data.statusColor}">${fullStatus}</span> | 
+        Dept: <b>${fullDept}</b> | <b>${data.version}</b>`;
+    assetModal.show();
+
+    // Panneau de droite
+    DOM.details.className = ""; 
+    DOM.details.innerHTML = `
+        <div class="detail-header mb-3">
+            <img src="${data.img}" class="img-fluid rounded mb-2 shadow-sm">
+            <h5>${data.name}</h5>
+            <div class="small"><span class="badge" style="background:${data.statusColor}">${fullStatus}</span> ${data.version}</div>
+        </div>
+        <div class="comment-section">
+            <h6 class="small fw-bold text-uppercase border-bottom pb-1">Discussion</h6>
+            <div id="chatBox" class="chat-box mb-2" style="max-height: 250px; overflow-y:auto;">
+                <div class="bg-light p-2 rounded small border mb-2">Discussion ouverte pour ${fullDept}.</div>
+            </div>
+            <div class="input-group input-group-sm">
+                <input type="text" id="commentInput" class="form-control" placeholder="Répondre...">
+                <button class="btn btn-primary btn-sm" onclick="addComment()"><i class="bi bi-send"></i></button>
+            </div>
+        </div>
+    `;
+}
+
+function addComment() {
+    const input = document.getElementById('commentInput');
+    const chat = document.getElementById('chatBox');
+    if (!input.value.trim()) return;
+
+    const html = `
+        <div class="d-flex gap-2 mb-2 animation-fade-in">
+            <div class="user-avatar" style="width:24px; height:24px; font-size:0.5rem; flex-shrink:0;">AD</div>
+            <div class="bg-white p-2 rounded small flex-grow-1 border">
+                <div class="fw-bold" style="font-size:0.65rem;">Admin <span class="fw-normal opacity-50 float-end">Maintenant</span></div>
+                <div style="font-size:0.75rem;">${input.value}</div>
+            </div>
+        </div>`;
+    chat.insertAdjacentHTML('beforeend', html);
+    input.value = '';
+    chat.scrollTop = chat.scrollHeight;
+}
+
+/**
+ * INITIALISATION
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    allAssets = Array.from(document.querySelectorAll('.asset-item'));
+    assetModal = new bootstrap.Modal(document.getElementById('assetModal'));
+
+    initResizer('leftResizer', 'leftPanel', 'left');
+    initResizer('rightResizer', 'rightPanel', 'right');
+    setupAuthDemo();
+    
+    // Initialisation filtres et events...
+    // (Ajoutez ici le reste des addEventListener pour le tri et la recherche)
+
+    updateDisplay();
+    setTimeout(() => document.getElementById('loader-wrapper')?.classList.add('fade-out'), 600);
+});
