@@ -2,7 +2,7 @@
     "titre": "SaAM",
     "sousTitre": "Shots and Assets Manager",
     "company": "LRDS",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "status": [
         { "code": "hld", "label": "On Hold", "color": "#dc3545" },
         { "code": "wip", "label": "In Progress", "color": "#ffc107" },
