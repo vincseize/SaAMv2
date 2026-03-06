@@ -355,7 +355,10 @@ $n_asset       = 82; // Assets de démo
     // On définit aussi le rôle pour les privilèges
     window.USER_ROLE = "<?php echo $randomUser['role'] ?? 'user'; ?>";
 </script>
+    <script src="js/blender-launcher.js"></script>
+    <script src="js/asset-actions.js"></script>
     <script src="js/script.js"></script>
+    
 
     <script>
         function openAddAssetModal() {

@@ -1,28 +1,39 @@
 <?php
 /**
  * ajax_launch_blender.php
- * Lance Blender via le shell Windows
+ * Lancement via Shell Windows (CMD)
  */
 header('Content-Type: application/json');
 
 try {
-    // La commande 'start' permet de lancer le processus en arrière-plan 
-    // sans bloquer le serveur Apache. 
-    // 'blender' fonctionne car il est dans votre PATH.
-    
-    $output = [];
-    $resultCode = 0;
-    
-    // Commande : start /B blender 
-    // /B lance sans ouvrir une nouvelle fenêtre CMD
-    exec('start /B blender', $output, $resultCode);
+    // 1. CHEMIN ABSOLU : C'est le point critique. 
+    // PHP n'a pas accès à ton "PATH" utilisateur.
+    $blenderPath = 'C:\Program Files\Blender Foundation\Blender 4.3\blender.exe';
 
-    if ($resultCode === 0) {
-        echo json_encode(['success' => true, 'message' => 'Blender lancé']);
-    } else {
-        throw new Exception("Erreur lors du lancement (Code: $resultCode)");
+    if (!file_exists($blenderPath)) {
+        throw new Exception("Fichier introuvable : " . $blenderPath);
     }
 
+    // 2. CONSTRUCTION DE LA COMMANDE
+    // 'start' : commande Windows pour lancer un processus indépendant
+    // /B : évite l'ouverture d'une fenêtre de terminal noire
+    // "" : obligatoire si le chemin contient des espaces
+    $command = 'start /B "" "' . $blenderPath . '"';
+
+    // 3. EXÉCUTION VIA SHELL_EXEC
+    // Sous Windows, pour que ce soit asynchrone (ne pas bloquer la page), 
+    // on peut rediriger la sortie.
+    shell_exec($command);
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Commande envoyée au shell Windows',
+        'exec' => $command
+    ]);
+
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    echo json_encode([
+        'success' => false, 
+        'error' => $e->getMessage()
+    ]);
 }
